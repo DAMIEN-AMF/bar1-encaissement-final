@@ -16,8 +16,8 @@ export default function App() {
   const encaisser = () => {
     if (!selected || !payment) return;
     const entry = { ...selected, payment };
-    setHistory([...history, entry]);
-    setTotal(total + selected.price);
+    setHistory((prev) => [...prev, entry]);
+    setTotal((prev) => prev + selected.price);
     setSelected(null);
     setPayment(null);
   };
@@ -30,7 +30,14 @@ export default function App() {
       <div style={{ margin: '1rem 0' }}>
         <h3>Choisir un produit :</h3>
         {products.map((p) => (
-          <button key={p.name} onClick={() => setSelected(p)} style={{ margin: '0.5rem' }}>
+          <button
+            key={p.name}
+            onClick={() => setSelected(p)}
+            style={{
+              margin: '0.5rem',
+              backgroundColor: selected?.name === p.name ? '#d1e7dd' : ''
+            }}
+          >
             {p.name} - {p.price} €
           </button>
         ))}
@@ -39,13 +46,24 @@ export default function App() {
       <div style={{ margin: '1rem 0' }}>
         <h3>Mode de paiement :</h3>
         {['CB', 'Espèces'].map((m) => (
-          <button key={m} onClick={() => setPayment(m)} style={{ margin: '0.5rem' }}>
+          <button
+            key={m}
+            onClick={() => setPayment(m)}
+            style={{
+              margin: '0.5rem',
+              backgroundColor: payment === m ? '#cfe2ff' : ''
+            }}
+          >
             {m}
           </button>
         ))}
       </div>
 
-      <button onClick={encaisser} disabled={!selected || !payment}>
+      <button
+        onClick={encaisser}
+        disabled={!selected || !payment}
+        style={{ padding: '0.5rem 1rem', marginTop: '1rem' }}
+      >
         Encaisser
       </button>
 
